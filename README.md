@@ -4,6 +4,6 @@ Travis CI Status: [![Build Status](https://travis-ci.org/DennyZhang/remote-comma
 Run remote ssh commands on multiple servers
 
 People can:
-1. Run command sequentially or parallelly
-2. When sequentially, people can choose whether to stop if previous servers has failed.
-3. When parallelly, people can choose how many concurrent executors we should have.
+1. People can choose how many concurrent executors we support.
+2. If the count of concurrent executors is 1, we run remote ssh commands sequentially.
+3. People can specify whether to quit and abort following servers, if previous batch has any errors.
