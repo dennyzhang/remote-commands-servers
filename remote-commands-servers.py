@@ -9,10 +9,10 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-05 19:02:02>
+## Updated: Time-stamp: <2017-09-05 19:05:41>
 ##-------------------------------------------------------------------
 def test():
-    print "hello, world"
+    print("hello, world")
 
 if __name__ == '__main__':
     test()
