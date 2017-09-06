@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-05 19:19:14>
+## Updated: Time-stamp: <2017-09-05 19:20:22>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -38,6 +38,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--server_list', required=True, \
                         help="A list of servers to run the remote ssh commands", type=str)
+    parser.add_argument('--command_list', required=True, \
+                        help="A list of commands to run", type=str)
     parser.add_argument('--executor_count', default=1, \
                         help="How many concurrent executors to run. Default value is 1.", type=int)
     parser.add_argument('--ssh_username', default="root", \
