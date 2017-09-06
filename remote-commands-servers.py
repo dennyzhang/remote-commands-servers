@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-05 19:13:17>
+## Updated: Time-stamp: <2017-09-05 19:19:14>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -28,10 +28,11 @@ def run_remote_ssh(server, username, ssh_port, ssh_key_file, key_passphrase, ssh
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         output = "\n".join(stdout.readlines())
         ssh.close()
-        info_dict = json.loads(output)
-        return (server, info_dict, None)
+        output = (stdin, stdout, stderr)
+        # info_dict = json.loads(output)
+        return (server, output, None)
     except:
-        return (server, {}, "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
+        return (server, (), "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -46,4 +47,7 @@ if __name__ == '__main__':
     parser.add_argument('--key_passphrase', default="", \
                         help="Key passphrase for SSH private key file. If not given, key file is assumed unencrypted.", \
                         type=str)
+    parser.add_argument('--avoid_abort', dest='avoid_abort', action='store_true', default=False, \
+                        help="Whether to avoid abort. By default, any node failure will abort the whole process")
+    l = parser.parse_args()
 ## File : remote-commands-servers.py ends
