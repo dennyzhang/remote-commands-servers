@@ -14,7 +14,7 @@ People can customize this by providing --avoid_abort option.
 - TODO:
 ```
 Denny: mac$ python ./remote-commands-servers.py --help
-usage: remote-commands-servers.py [-h] --server_list SERVER_LIST [--executor_count EXECUTOR_COUNT]
+usage: remote-commands-servers.py [-h] --server_list SERVER_LIST --command_list COMMAND_LIST [--executor_count EXECUTOR_COUNT]
                                   [--ssh_username SSH_USERNAME] --ssh_key_file SSH_KEY_FILE [--key_passphrase KEY_PASSPHRASE]
                                   [--avoid_abort]
 
@@ -22,6 +22,8 @@ optional arguments:
   -h, --help            show this help message and exit
   --server_list SERVER_LIST
                         A list of servers to run the remote ssh commands
+  --command_list COMMAND_LIST
+                        A list of commands to run
   --executor_count EXECUTOR_COUNT
                         How many concurrent executors to run. Default value is 1.
   --ssh_username SSH_USERNAME
