@@ -9,11 +9,11 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-05 18:45:09>
+## Updated: Time-stamp: <2017-09-05 19:02:02>
 ##-------------------------------------------------------------------
 def test():
     print "hello, world"
-    
+
 if __name__ == '__main__':
     test()
 ## File : remote-commands-servers.py ends
