@@ -6,9 +6,12 @@ Run remote ssh commands on multiple servers
 People can:
 1. People can choose how many concurrent executors to run. By default, it's 1.
 2. If executors count is 1, we run remote ssh commands sequentially.
-3. By default, it will abort immediately, if previous batch has any errors. People can customize by providing --avoid_abort option.
+3. By default, it will abort immediately, if previous batch has any errors. 
+
+People can customize this by providing --avoid_abort option.
 
 # Usage
+- TODO:
 ```
 Denny: mac$ python ./remote-commands-servers.py --help
 usage: remote-commands-servers.py [-h] --server_list SERVER_LIST [--executor_count EXECUTOR_COUNT]
