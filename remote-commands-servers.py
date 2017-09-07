@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 16:28:15>
+## Updated: Time-stamp: <2017-09-07 16:39:03>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -17,7 +17,7 @@ import argparse
 
 def get_ssh_server_list(server_list):
     l = []
-    for line in server_list.split('\n'):
+    for line in server_list.split(','):
         line = line.strip()
         if line == '' or line.startswith('#') is True:
             continue
@@ -28,9 +28,8 @@ def get_ssh_server_list(server_list):
 
 def remote_commands_servers(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
     [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
-
     print("Run remote commands: %s" % (command_list))
-    # TODO: implement this
+    # TODO: implement this logic
     for server in server_list:
         [ip, port] = server
         (status, detail) = run_remote_ssh(ip, ssh_username, port, ssh_key_file, key_passphrase, command_list)
@@ -59,7 +58,7 @@ def run_remote_ssh(server, username, ssh_port, ssh_key_file, key_passphrase, ssh
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--server_list', required=True, \
-                        help="A list of servers to run the remote ssh commands", type=str)
+                        help="A list of ip-port. Separated by comma.", type=str)
     parser.add_argument('--command_list', required=True, \
                         help="A list of commands to run", type=str)
     parser.add_argument('--executor_count', default=1, \

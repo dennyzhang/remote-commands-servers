@@ -37,3 +37,5 @@ optional arguments:
 
 Notice:
 - Here we assume all remote servers can accept ssh by the same ssh private key file.
+
+- TODO: Add real example for how to use it
