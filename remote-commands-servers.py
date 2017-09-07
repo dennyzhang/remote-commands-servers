@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:03:52>
+## Updated: Time-stamp: <2017-09-07 17:06:17>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -82,7 +82,13 @@ if __name__ == '__main__':
         print("Unexpected error to parse server list: %s, %s" % (sys.exc_info()[0], e))
         sys.exit(1)
 
-    # TODO: get return code
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
-    remote_commands_servers(server_list, l.executor_count, l.avoid_abort, l.command_list, ssh_parameter_list)
+    failed_server_list = remote_commands_servers(server_list, l.executor_count, \
+                                                 l.avoid_abort, l.command_list, ssh_parameter_list)
+    if len(failed_server_list) == []:
+        print("OK: Actions succeed")
+        sys.exit(0)
+    else:
+        print("ERROR: Failed servers: %s" % (','.join(failed_server_list)))
+        sys.exit(1)
 ## File : remote-commands-servers.py ends
