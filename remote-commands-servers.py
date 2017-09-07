@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 16:40:59>
+## Updated: Time-stamp: <2017-09-07 16:46:32>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -32,12 +32,13 @@ def get_ssh_server_list(server_list):
             continue
         # TODO: error handling
         [ip, port] = line.split(':')
+        port = int(port)
         l.append([ip, port])
     return l
         
-def run_remote_ssh(server, username, command_list, ssh_parameter_list):
+def run_remote_ssh(ip, port, ssh_command, ssh_parameter_list):
     [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
-    print("Run ssh command in %s" % (server))
+    print("Run ssh command in %s" % (ip))
     import logging
     logging.getLogger("paramiko").setLevel(logging.WARNING)
     output = ""
@@ -46,7 +47,7 @@ def run_remote_ssh(server, username, command_list, ssh_parameter_list):
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
-        ssh.connect(server, username=username, port=ssh_port, pkey=key)
+        ssh.connect(ip, username=ssh_username, port=port, pkey=key)
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         output = "\n".join(stdout.readlines())
         ssh.close()
@@ -54,7 +55,7 @@ def run_remote_ssh(server, username, command_list, ssh_parameter_list):
         # info_dict = json.loads(output)
         return ("OK", output)
     except:
-        return ("ERROR", "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
+        return ("ERROR", "Unexpected on server: %s error: %s" % (ip, sys.exc_info()[0]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
