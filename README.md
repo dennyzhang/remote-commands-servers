@@ -5,7 +5,7 @@ Run remote ssh commands on multiple servers
 
 You can:
 1. Choose whether to run sequentially or in parallel. By default, it's sequential.
-2. When sequential, it will abort immediately if any node has failed. Use **--avoid_abort** option to customize it.
+2. When sequential, it will abort immediately if any node has failed. Customize by **--avoid_abort**.
 
 # Online Usage
 ```
