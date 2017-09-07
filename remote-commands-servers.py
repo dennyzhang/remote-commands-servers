@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:07:33>
+## Updated: Time-stamp: <2017-09-07 17:08:11>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -87,8 +87,8 @@ if __name__ == '__main__':
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
     failed_server_list = remote_commands_servers(server_list, l.executor_count, \
                                                  l.avoid_abort, l.command_list, ssh_parameter_list)
-    if len(failed_server_list) == []:
-        print("OK: Actions succeed")
+    if len(failed_server_list) == 0:
+        print("OK: Actions succeed!")
         sys.exit(0)
     else:
         print("ERROR: Failed servers: %s" % (','.join(failed_server_list)))
