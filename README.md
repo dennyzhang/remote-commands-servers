@@ -7,6 +7,9 @@ You can:
 1. Choose whether to run sequentially or in parallel. By default, it's sequential.
 2. When sequentially, it will abort immediately if any node has failed. Customize by **--avoid_abort**.
 
+Notice:
+- Here we assume all remote servers can accept ssh by the same ssh private key file.
+
 # Online Usage
 ```
 Denny: mac$ python ./remote-commands-servers.py --help
@@ -64,6 +67,3 @@ python ./remote-commands-servers.py \
     --avoid_abort \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
 ```
-
-Notice:
-- Here we assume all remote servers can accept ssh by the same ssh private key file.
