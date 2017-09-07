@@ -35,27 +35,33 @@ optional arguments:
 ```
 
 # Different Scenarios
+- Paralell
 ```
-# Paralell
 python ./remote-commands-servers.py \
     --server_list "45.33.88.175:2702, www.dennyzhang.com:23, test.dennyzhang.com:2703" \
     --command_list "date; hostname" --ssh_username "root" \
     --enable_parallel \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
+```
 
-# Sequential
+- Sequential
+```
 python ./remote-commands-servers.py \
     --server_list "45.33.88.175:2702, www.dennyzhang.com:23, test.dennyzhang.com:2703" \
     --command_list "date; hostname" --ssh_username "root" \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
+```
 
-# Sequential, abort if any errors
+- Sequential, abort if any errors
+```
 python ./remote-commands-servers.py \
     --server_list "45.33.88.175:2702, www.dennyzhang.com:23, test.dennyzhang.com:2703" \
     --command_list "date; false && hostname" --ssh_username "root" \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
+```
 
-# Sequential, avoid fast fail
+- Sequential, avoid fast fail
+```
 python ./remote-commands-servers.py \
     --server_list "45.33.88.175:2702, www.dennyzhang.com:23, test.dennyzhang.com:2703" \
     --command_list "date; false && hostname" --ssh_username "root" \
