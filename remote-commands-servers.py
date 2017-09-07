@@ -9,13 +9,35 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-05 19:20:22>
+## Updated: Time-stamp: <2017-09-07 16:28:15>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
 import argparse
 
+def get_ssh_server_list(server_list):
+    l = []
+    for line in server_list.split('\n'):
+        line = line.strip()
+        if line == '' or line.startswith('#') is True:
+            continue
+        # TODO: error handling
+        [ip, port] = line.split(':')
+        l.append([ip, port])
+    return l
+
+def remote_commands_servers(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
+    [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
+
+    print("Run remote commands: %s" % (command_list))
+    # TODO: implement this
+    for server in server_list:
+        [ip, port] = server
+        (status, detail) = run_remote_ssh(ip, ssh_username, port, ssh_key_file, key_passphrase, command_list)
+        print("status: %s, detail: %s" % (status, detail))
+        
 def run_remote_ssh(server, username, ssh_port, ssh_key_file, key_passphrase, ssh_command):
+    print("Run ssh command in %s" % (server))
     import logging
     logging.getLogger("paramiko").setLevel(logging.WARNING)
     output = ""
@@ -30,9 +52,9 @@ def run_remote_ssh(server, username, ssh_port, ssh_key_file, key_passphrase, ssh
         ssh.close()
         output = (stdin, stdout, stderr)
         # info_dict = json.loads(output)
-        return (server, output, None)
+        return ("OK", output)
     except:
-        return (server, (), "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
+        return ("ERROR", "Unexpected on server: %s error: %s" % (server, sys.exc_info()[0]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -52,4 +74,9 @@ if __name__ == '__main__':
     parser.add_argument('--avoid_abort', dest='avoid_abort', action='store_true', default=False, \
                         help="Whether to avoid abort. By default, any node failure will abort the whole process")
     l = parser.parse_args()
+
+    server_list = get_ssh_server_list(l.server_list)
+    # TODO: get return code
+    ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
+    remote_commands_servers(server_list, l.executor_count, l.avoid_abort, l.command_list, ssh_parameter_list)
 ## File : remote-commands-servers.py ends

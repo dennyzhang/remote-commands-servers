@@ -8,7 +8,7 @@ People can:
 2. If executors count is 1, we run remote ssh commands sequentially.
 3. By default, it will abort immediately, if previous batch has any errors. 
 
-People can customize this by providing --avoid_abort option.
+People can customize this by providing **--avoid_abort** option.
 
 # Usage
 - TODO:
