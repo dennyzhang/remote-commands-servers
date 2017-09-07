@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 16:54:24>
+## Updated: Time-stamp: <2017-09-07 16:58:58>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -35,7 +35,7 @@ def get_ssh_server_list(server_list):
         port = int(port)
         l.append([ip, port])
     return l
-        
+
 def run_remote_ssh(ip, port, ssh_command, ssh_parameter_list):
     [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
     print("Run ssh command in %s:%d" % (ip, port))
@@ -48,6 +48,7 @@ def run_remote_ssh(ip, port, ssh_command, ssh_parameter_list):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
         ssh.connect(ip, username=ssh_username, port=port, pkey=key)
+        # TODO: trap exit code and report it
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         stdout_str = "\n".join(stdout.readlines())
         stderr_str = "\n".join(stderr.readlines())
