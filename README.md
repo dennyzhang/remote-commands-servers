@@ -11,7 +11,6 @@ People can:
 People can customize this by providing **--avoid_abort** option.
 
 # Online Usage
-- TODO:
 ```
 Denny: mac$ python ./remote-commands-servers.py --help
 usage: remote-commands-servers.py [-h] --server_list SERVER_LIST --command_list COMMAND_LIST [--ssh_username SSH_USERNAME]
