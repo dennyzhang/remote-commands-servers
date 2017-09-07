@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:20:01>
+## Updated: Time-stamp: <2017-09-07 17:22:18>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     try:
         server_list = get_ssh_server_list(l.server_list)
     except Exception as e:
-        print("Unexpected error to parse server list: %s, %s" % (sys.exc_info()[0], e))
+        print("Unexpected error in parsing server_list: %s, %s" % (sys.exc_info()[0], e))
         sys.exit(1)
 
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
