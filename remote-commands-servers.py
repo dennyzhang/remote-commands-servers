@@ -9,13 +9,30 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:22:18>
+## Updated: Time-stamp: <2017-09-07 18:05:30>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
 import argparse
 
-def remote_commands_servers(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
+def remote_commands(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
+    if executor_count == 1:
+        return remote_commands_sequential(server_list, avoid_abort, command_list, ssh_parameter_list)
+    return remote_commands_parallel(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list)
+
+def remote_commands_sequential(server_list, avoid_abort, command_list, ssh_parameter_list):
+    failed_server_list = []
+    print("Run remote commands: %s" % (command_list))
+    # TODO: avoid_abort
+    for server in server_list:
+        [ip, port] = server
+        (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
+        if exit_code != 0:
+            failed_server_list.append(ip)
+        print("Exit code: %d, Detail: %s" % (exit_code, detail))
+    return failed_server_list
+
+def remote_commands_parallel(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
     failed_server_list = []
     print("Run remote commands: %s" % (command_list))
     # TODO: avoid_abort
@@ -52,6 +69,7 @@ def run_remote_ssh(ip, port, ssh_command, ssh_parameter_list):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
         ssh.connect(ip, username=ssh_username, port=port, pkey=key)
+        # TODO: show stdout earlier
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         exit_code = stdout.channel.recv_exit_status()
         stdout_str = "\n".join(stdout.readlines())
@@ -88,12 +106,16 @@ if __name__ == '__main__':
         sys.exit(1)
 
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
-    failed_server_list = remote_commands_servers(server_list, l.executor_count, \
-                                                 l.avoid_abort, l.command_list, ssh_parameter_list)
+    failed_server_list = remote_commands(server_list, l.executor_count, \
+                                         l.avoid_abort, l.command_list, ssh_parameter_list)
     if len(failed_server_list) == 0:
         print("OK: Actions succeed!")
         sys.exit(0)
     else:
-        print("ERROR: Failed servers: %s" % (','.join(failed_server_list)))
+        err_msg = "ERROR: Failed servers: %s" % (','.join(failed_server_list))
+        if l.executor_count == 1:
+            err_msg = "%s.\nexecutor_count is configured as 1. Thus some servers might have been skipped." \
+                      % (err_msg)
+        print(err_msg)
         sys.exit(1)
 ## File : remote-commands-servers.py ends
