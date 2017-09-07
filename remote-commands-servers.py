@@ -9,12 +9,21 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 16:39:03>
+## Updated: Time-stamp: <2017-09-07 16:40:59>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
 import argparse
 
+def remote_commands_servers(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
+    print("Run remote commands: %s" % (command_list))
+    # TODO: implement this logic
+    for server in server_list:
+        [ip, port] = server
+        (status, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
+        print("status: %s, detail: %s" % (status, detail))
+
+################################################################################
 def get_ssh_server_list(server_list):
     l = []
     for line in server_list.split(','):
@@ -25,17 +34,9 @@ def get_ssh_server_list(server_list):
         [ip, port] = line.split(':')
         l.append([ip, port])
     return l
-
-def remote_commands_servers(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
-    [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
-    print("Run remote commands: %s" % (command_list))
-    # TODO: implement this logic
-    for server in server_list:
-        [ip, port] = server
-        (status, detail) = run_remote_ssh(ip, ssh_username, port, ssh_key_file, key_passphrase, command_list)
-        print("status: %s, detail: %s" % (status, detail))
         
-def run_remote_ssh(server, username, ssh_port, ssh_key_file, key_passphrase, ssh_command):
+def run_remote_ssh(server, username, command_list, ssh_parameter_list):
+    [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
     print("Run ssh command in %s" % (server))
     import logging
     logging.getLogger("paramiko").setLevel(logging.WARNING)
