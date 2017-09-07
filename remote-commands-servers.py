@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 16:58:58>
+## Updated: Time-stamp: <2017-09-07 17:03:52>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -30,7 +30,6 @@ def get_ssh_server_list(server_list):
         line = line.strip()
         if line == '' or line.startswith('#') is True:
             continue
-        # TODO: error handling
         [ip, port] = line.split(':')
         port = int(port)
         l.append([ip, port])
@@ -76,7 +75,13 @@ if __name__ == '__main__':
                         help="Whether to avoid abort. By default, any node failure will abort the whole process")
     l = parser.parse_args()
 
-    server_list = get_ssh_server_list(l.server_list)
+    server_list = []
+    try:
+        server_list = get_ssh_server_list(l.server_list)
+    except Exception as e:
+        print("Unexpected error to parse server list: %s, %s" % (sys.exc_info()[0], e))
+        sys.exit(1)
+
     # TODO: get return code
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
     remote_commands_servers(server_list, l.executor_count, l.avoid_abort, l.command_list, ssh_parameter_list)
