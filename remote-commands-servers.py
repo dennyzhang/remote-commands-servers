@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:17:23>
+## Updated: Time-stamp: <2017-09-07 17:20:01>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -18,7 +18,8 @@ import argparse
 def remote_commands_servers(server_list, executor_count, avoid_abort, command_list, ssh_parameter_list):
     failed_server_list = []
     print("Run remote commands: %s" % (command_list))
-    # TODO: implement this logic
+    # TODO: avoid_abort
+    # TODO: executor_count
     for server in server_list:
         [ip, port] = server
         (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
