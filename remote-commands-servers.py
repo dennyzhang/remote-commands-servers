@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:16:50>
+## Updated: Time-stamp: <2017-09-07 17:17:23>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -24,7 +24,7 @@ def remote_commands_servers(server_list, executor_count, avoid_abort, command_li
         (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
         if exit_code != 0:
             failed_server_list.append(ip)
-        print("Exit code: %d, Detail:\n%s" % (exit_code, detail))
+        print("Exit code: %d, Detail: %s" % (exit_code, detail))
     return failed_server_list
 
 ################################################################################
