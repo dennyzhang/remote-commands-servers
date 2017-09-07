@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 18:38:39>
+## Updated: Time-stamp: <2017-09-07 18:48:10>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -96,20 +96,20 @@ def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--server_list', required=True, \
-                        help="A list of ip-port. Separated by comma.", type=str)
+                        help="A list of ip-port. Separated by comma", type=str)
     parser.add_argument('--command_list', required=True, \
                         help="A list of commands to run", type=str)
     parser.add_argument('--ssh_username', default="root", \
                         help="SSH username", type=str)
     parser.add_argument('--ssh_key_file', required=True, \
-                        help="SSH private key file. Here we assume the same key file works for all servers.", type=str)
+                        help="SSH private key file. Here we assume the same key file works for all servers", type=str)
     parser.add_argument('--key_passphrase', default="", \
-                        help="Key passphrase for SSH private key file. If not given, key file is assumed unencrypted.", \
+                        help="Key passphrase for SSH private key file. If not given, key file is in plain text", \
                         type=str)
     parser.add_argument('--enable_parallel', dest='enable_parallel', action='store_true', default=False, \
-                        help="By default, it's sequential. If enabled, we will run commands in all nodes simultaneously.")
+                        help="By default, it's sequential. If enabled, we will run commands in all nodes simultaneously")
     parser.add_argument('--avoid_abort', dest='avoid_abort', action='store_true', default=False, \
-                        help="When sequentially, whether to keep going if some nodes have failed.")
+                        help="When sequentially, whether to keep going if some nodes have failed")
     l = parser.parse_args()
 
     server_list = []

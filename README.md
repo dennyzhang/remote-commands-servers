@@ -5,7 +5,7 @@ Run remote ssh commands on multiple servers
 
 You can:
 1. Choose whether to run sequentially or in parallel. By default, it's sequential.
-2. When sequential, it will abort immediately if any node has failed. Customize by **--avoid_abort**.
+2. When sequentially, it will abort immediately if any node has failed. Customize by **--avoid_abort**.
 
 # Online Usage
 ```
@@ -17,17 +17,17 @@ usage: remote-commands-servers.py [-h] --server_list SERVER_LIST --command_list 
 optional arguments:
   -h, --help            show this help message and exit
   --server_list SERVER_LIST
-                        A list of ip-port. Separated by comma.
+                        A list of ip-port. Separated by comma
   --command_list COMMAND_LIST
                         A list of commands to run
   --ssh_username SSH_USERNAME
                         SSH username
   --ssh_key_file SSH_KEY_FILE
-                        SSH private key file. Here we assume the same key file works for all servers.
+                        SSH private key file. Here we assume the same key file works for all servers
   --key_passphrase KEY_PASSPHRASE
-                        Key passphrase for SSH private key file. If not given, key file is assumed unencrypted.
-  --enable_parallel     By default, it's sequential. If enabled, we will run commands in all nodes simultaneously.
-  --avoid_abort         When sequentially, whether to keep going if some nodes have failed.
+                        Key passphrase for SSH private key file. If not given, key file is in plain text
+  --enable_parallel     By default, it's sequential. If enabled, we will run commands in all nodes simultaneously
+  --avoid_abort         When sequentially, whether to keep going if some nodes have failed
 ```
 
 # Different Scenarios
