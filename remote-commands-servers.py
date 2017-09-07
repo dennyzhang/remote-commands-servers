@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 17:08:11>
+## Updated: Time-stamp: <2017-09-07 17:16:50>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -21,8 +21,10 @@ def remote_commands_servers(server_list, executor_count, avoid_abort, command_li
     # TODO: implement this logic
     for server in server_list:
         [ip, port] = server
-        (status, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
-        print("status: %s, Detail:\n%s" % (status, detail))
+        (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
+        if exit_code != 0:
+            failed_server_list.append(ip)
+        print("Exit code: %d, Detail:\n%s" % (exit_code, detail))
     return failed_server_list
 
 ################################################################################
@@ -49,14 +51,14 @@ def run_remote_ssh(ip, port, ssh_command, ssh_parameter_list):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
         ssh.connect(ip, username=ssh_username, port=port, pkey=key)
-        # TODO: trap exit code and report it
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
+        exit_code = stdout.channel.recv_exit_status()
         stdout_str = "\n".join(stdout.readlines())
         stderr_str = "\n".join(stderr.readlines())
         ssh.close()
-        return ("OK", "stdout: %s\nstderr: %s" % (stdout_str, stderr_str))
+        return (exit_code, "stdout: %s\nstderr: %s" % (stdout_str, stderr_str))
     except:
-        return ("ERROR", "Unexpected on server: %s error: %s" % (ip, sys.exc_info()[0]))
+        return (1, "Unexpected on server: %s error: %s" % (ip, sys.exc_info()[0]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
