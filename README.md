@@ -3,12 +3,9 @@ Travis CI Status: [![Build Status](https://travis-ci.org/DennyZhang/remote-comma
 # remote-commands-servers
 Run remote ssh commands on multiple servers
 
-People can:
-1. People can choose how many concurrent executors to run. By default, it's 1.
-2. If executors count is 1, we run remote ssh commands sequentially.
-3. By default, it will abort immediately, if previous batch has any errors. 
-
-People can customize this by providing **--avoid_abort** option.
+You can:
+1. Choose whether to run sequentially or in parallel. By default, it's sequential.
+2. When sequential, it will abort immediately if any node has failed. Use **--avoid_abort** option to customize it.
 
 # Online Usage
 ```
