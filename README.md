@@ -13,9 +13,9 @@ Notice:
 # Online Usage
 ```
 Denny: mac$ python ./remote-commands-servers.py --help
-usage: remote-commands-servers.py [-h] --server_list SERVER_LIST --command_list COMMAND_LIST [--ssh_username SSH_USERNAME]
-                                  --ssh_key_file SSH_KEY_FILE [--key_passphrase KEY_PASSPHRASE] [--enable_parallel]
-                                  [--avoid_abort]
+usage: remote-commands-servers.py [-h] --server_list SERVER_LIST [--command_list COMMAND_LIST] [--command_file COMMAND_FILE]
+                                  [--ssh_username SSH_USERNAME] --ssh_key_file SSH_KEY_FILE [--key_passphrase KEY_PASSPHRASE]
+                                  [--enable_parallel] [--avoid_abort]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -23,6 +23,8 @@ optional arguments:
                         A list of ip-port. Separated by comma
   --command_list COMMAND_LIST
                         A list of commands to run
+  --command_file COMMAND_FILE
+                        File to host bash command. If --command_list no given, use this one
   --ssh_username SSH_USERNAME
                         SSH username
   --ssh_key_file SSH_KEY_FILE
