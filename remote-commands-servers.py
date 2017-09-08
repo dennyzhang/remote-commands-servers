@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-08 18:32:42>
+## Updated: Time-stamp: <2017-09-08 18:41:49>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -17,7 +17,6 @@ import argparse
 
 def remote_commands_sequential(server_list, avoid_abort, command_list, ssh_parameter_list):
     failed_server_list = []
-    print("Run remote commands: %s" % (command_list))
     for server in server_list:
         [ip, port] = server
         (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
@@ -77,7 +76,8 @@ def get_ssh_server_list(server_list):
 
 def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
     [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
-    print("Run ssh command in %s:%d" % (ip, port))
+    output_prefix = "================ "
+    print("%sRun ssh command in %s:%d" % (output_prefix, ip, port))
     import logging
     logging.getLogger("paramiko").setLevel(logging.WARNING)
     output = ""
@@ -93,10 +93,10 @@ def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
         stdout_str = "\n".join(stdout.readlines())
         stderr_str = "\n".join(stderr.readlines())
         ssh.close()
-        if stderr == "":
+        if stderr_str == "":
             return (exit_code, stdout_str)
         else:
-            return (exit_code, "stdout: %s\nstderr: %s" % (stdout_str, stderr_str))
+            return (exit_code, "stdout: %s\nstderr: %s." % (stdout_str, stderr_str))
     except:
         return (1, "Unexpected on server: %s error: %s" % (ip, sys.exc_info()[0]))
 
