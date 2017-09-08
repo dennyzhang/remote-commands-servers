@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-07 21:34:59>
+## Updated: Time-stamp: <2017-09-08 18:25:52>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -97,8 +97,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--server_list', required=True, \
                         help="A list of ip-port. Separated by comma", type=str)
-    parser.add_argument('--command_list', required=True, \
+    parser.add_argument('--command_list', required=False, default="", \
                         help="A list of commands to run", type=str)
+    parser.add_argument('--command_file', required=False, default="", \
+                        help="File to host bash command. If --command_list no given, use this one", type=str)
     parser.add_argument('--ssh_username', default="root", \
                         help="SSH username", type=str)
     parser.add_argument('--ssh_key_file', required=True, \
@@ -111,21 +113,32 @@ if __name__ == '__main__':
     parser.add_argument('--avoid_abort', dest='avoid_abort', action='store_true', default=False, \
                         help="When sequentially, whether to keep going if some nodes have failed")
     l = parser.parse_args()
+    command_list = l.command_list
 
+    if l.command_list == "":
+        if l.command_file == "":
+            print("ERROR: you should either provide --command_list or _command_file")
+            sys.exit(1)
+        else:
+            try:
+                with open(l.command_file) as f:
+                    command_list = "\n".join(f.readlines())
+            except Exception as e:
+                    print("ERROR: Fail to read file(%s). error: %s" % (l.command_file, e))
+                    sys.exit(1)
     server_list = []
     try:
         server_list = get_ssh_server_list(l.server_list)
     except Exception as e:
         print("Unexpected error in parsing server_list: %s, %s" % (sys.exc_info()[0], e))
         sys.exit(1)
-
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
     if l.enable_parallel is False:
         failed_server_list = \
                              remote_commands_sequential(server_list, l.avoid_abort, \
-                                                        l.command_list, ssh_parameter_list)
+                                                        command_list, ssh_parameter_list)
     else:
-        failed_server_list = remote_commands_parallel(server_list, l.command_list, ssh_parameter_list)
+        failed_server_list = remote_commands_parallel(server_list, command_list, ssh_parameter_list)
 
     if len(failed_server_list) == 0:
         print("OK: Actions succeed!")
