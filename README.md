@@ -68,4 +68,4 @@ python ./remote-commands-servers.py \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
 ```
 
-Code is licensed under [MIT License](https://www.dennyzhang.com/wp-content/mit_license.txt)
+Code is licensed under [MIT License](https://www.dennyzhang.com/wp-content/mit_license.txt).
