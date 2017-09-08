@@ -40,7 +40,7 @@ optional arguments:
 ```
 python ./remote-commands-servers.py \
     --server_list "45.33.88.175:2702, www.dennyzhang.com:23, test.dennyzhang.com:2703" \
-    --command_list "date; hostname" --ssh_username "root" \
+    --command_list "date && hostname" --ssh_username "root" \
     --enable_parallel \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
 ```
@@ -49,7 +49,7 @@ python ./remote-commands-servers.py \
 ```
 python ./remote-commands-servers.py \
     --server_list "45.33.88.175:2702, www.dennyzhang.com:23, test.dennyzhang.com:2703" \
-    --command_list "date; hostname" --ssh_username "root" \
+    --command_list "date && hostname" --ssh_username "root" \
     --ssh_key_file "/Users/mac/.ssh/id_rsa" --key_passphrase "mykeypass"
 ```
 
