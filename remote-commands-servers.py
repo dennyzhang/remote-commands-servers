@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-08 18:31:40>
+## Updated: Time-stamp: <2017-09-08 18:32:42>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -93,7 +93,10 @@ def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
         stdout_str = "\n".join(stdout.readlines())
         stderr_str = "\n".join(stderr.readlines())
         ssh.close()
-        return (exit_code, "stdout: %s\nstderr: %s" % (stdout_str, stderr_str))
+        if stderr == "":
+            return (exit_code, stdout_str)
+        else:
+            return (exit_code, "stdout: %s\nstderr: %s" % (stdout_str, stderr_str))
     except:
         return (1, "Unexpected on server: %s error: %s" % (ip, sys.exc_info()[0]))
 
