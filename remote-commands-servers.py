@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-08 18:25:52>
+## Updated: Time-stamp: <2017-09-08 18:29:03>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -22,11 +22,13 @@ def remote_commands_sequential(server_list, avoid_abort, command_list, ssh_param
         [ip, port] = server
         (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
         # TODO: Show output in a better way
-        print("Exit code: %d, Detail: %s" % (exit_code, detail))
         if exit_code != 0:
+            print("Exit code: %d, Output:\n%s" % (exit_code, detail))
             failed_server_list.append(ip)
             if avoid_abort is False:
                 return failed_server_list
+        else:
+            print("Output:\n%s" % (exit_code, detail))
     return failed_server_list
 
 def remote_commands_parallel(server_list, command_list, ssh_parameter_list):
@@ -46,9 +48,11 @@ def remote_commands_parallel(server_list, command_list, ssh_parameter_list):
 
     for x in range(0, len(server_list)):
         (exit_code, detail) = q.get()
-        print("Exit code: %d, Detail: %s" % (exit_code, detail))
         if exit_code != 0:
+            print("Exit code: %d, Output:\n%s" % (exit_code, detail))
             failed_server_list.append(ip)
+        else:
+            print("Output:\n%s" % (exit_code, detail))
 
     return failed_server_list
 
