@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-11 18:31:54>
+## Updated: Time-stamp: <2017-09-11 18:34:10>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -23,16 +23,19 @@ def remote_commands_sequential(server_list, avoid_abort, command_list, ssh_param
         # TODO: Show output in a better way
         if exit_code != 0:
             print("In %s, Exit code: %d, Output:\n%s" % (ip, exit_code, detail))
+            sys.stdout.flush()
             failed_server_list.append(ip)
             if avoid_abort is False:
                 return failed_server_list
         else:
             print("In %s, Output:\n%s" % (ip, detail))
+            sys.stdout.flush()
     return failed_server_list
 
 def remote_commands_parallel(server_list, command_list, ssh_parameter_list):
     failed_server_list = []
     print("Run remote commands: %s" % (command_list))
+    sys.stdout.flush()
     # TODO: avoid_abort
     # TODO: executor_count
     # TODO: support Python3
@@ -49,9 +52,11 @@ def remote_commands_parallel(server_list, command_list, ssh_parameter_list):
         (exit_code, detail) = q.get()
         if exit_code != 0:
             print("In %s, Exit code: %d, Output:\n%s" % (ip, exit_code, detail))
+            sys.stdout.flush()
             failed_server_list.append(ip)
         else:
             print("In %s, Output:\n%s" % (ip, detail))
+            sys.stdout.flush()
 
     return failed_server_list
 
