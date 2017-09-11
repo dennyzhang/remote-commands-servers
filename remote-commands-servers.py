@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-08 18:41:49>
+## Updated: Time-stamp: <2017-09-11 18:31:54>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -77,10 +77,9 @@ def get_ssh_server_list(server_list):
 def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
     [ssh_username, ssh_key_file, key_passphrase] = ssh_parameter_list
     output_prefix = "================ "
-    print("%sRun ssh command in %s:%d" % (output_prefix, ip, port))
+    output = "%sRun ssh command in %s:%d" % (output_prefix, ip, port)
     import logging
     logging.getLogger("paramiko").setLevel(logging.WARNING)
-    output = ""
     info_dict = {}
     try:
         ssh = paramiko.SSHClient()
@@ -94,11 +93,11 @@ def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
         stderr_str = "\n".join(stderr.readlines())
         ssh.close()
         if stderr_str == "":
-            return (exit_code, stdout_str)
+            return (exit_code, "%s\n%s" % (output, stdout_str))
         else:
-            return (exit_code, "stdout: %s\nstderr: %s." % (stdout_str, stderr_str))
+            return (exit_code, "%s\nstdout: %s\nstderr: %s." % (output, stdout_str, stderr_str))
     except:
-        return (1, "Unexpected on server: %s error: %s" % (ip, sys.exc_info()[0]))
+        return (1, "%s\nUnexpected on server: %s error: %s" % (output, ip, sys.exc_info()[0]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
