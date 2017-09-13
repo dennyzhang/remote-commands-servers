@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-13 11:26:15>
+## Updated: Time-stamp: <2017-09-13 17:54:14>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -137,6 +137,7 @@ if __name__ == '__main__':
             except Exception as e:
                     print("ERROR: Fail to read file(%s). error: %s" % (l.command_file, e))
                     sys.exit(1)
+
     server_list = []
     try:
         server_list = get_ssh_server_list(l.server_list)
@@ -144,6 +145,8 @@ if __name__ == '__main__':
         print("Unexpected error in parsing server_list: %s, %s" % (sys.exc_info()[0], e))
         sys.exit(1)
     ssh_parameter_list = [l.ssh_username, l.ssh_key_file, l.key_passphrase]
+
+    command_list = "%s\n%s\n%s" % ("set -e", "set -o pipefail", command_list)
     if l.enable_parallel is False:
         failed_server_list = \
                              remote_commands_sequential(server_list, l.avoid_abort, \
