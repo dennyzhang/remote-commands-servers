@@ -9,5 +9,5 @@ install:
 # command to run tests
 script:
   - find . -name "*.py" | xargs pylint -E
-  - coverage run --source=mypkg setup.py test
+  - coverage run --source=. setup.py test
   - coveralls
