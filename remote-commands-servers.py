@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-11 18:34:10>
+## Updated: Time-stamp: <2017-09-13 11:26:15>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
     if l.command_list == "":
         if l.command_file == "":
-            print("ERROR: you should either provide --command_list or _command_file")
+            print("ERROR: you should either provide --command_list or --command_file")
             sys.exit(1)
         else:
             try:
