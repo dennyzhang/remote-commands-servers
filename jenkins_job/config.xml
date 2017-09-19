@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>50</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.chikli.hudson.plugin.naginator.NaginatorOptOutProperty plugin="naginator@1.17.2">
+      <optOut>false</optOut>
+    </com.chikli.hudson.plugin.naginator.NaginatorOptOutProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.TextParameterDefinition>
+          <name>server_list</name>
+          <description></description>
+          <defaultValue>server1.dennyzhang.com:2702
+server2.dennyzhang.com:22
+</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>command_list</name>
+          <description></description>
+          <defaultValue>date
+hostname
+sleep 5</defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>enable_parallel</name>
+          <description></description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ssh_username</name>
+          <description></description>
+          <defaultValue>root</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ssh_key_file</name>
+          <description></description>
+          <defaultValue>/var/jenkins_home/.ssh/tmp_id_rsa</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>key_passphrase</name>
+          <description></description>
+          <defaultValue>{AQAAABAAAAAQAH/GcKcuD241U9lt8swTGwNGQKzpKmih3pXJlQLsHJ0=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash -e
+server_list=$(echo $server_list | sed -e &apos;s/ /,/g&apos;)
+command_file=&quot;/tmp/command_list_${JOB_NAME}_${BUILD_ID}&quot;
+cat &gt; &quot;$command_file&quot; &lt;&lt;EOF
+$command_list
+EOF
+
+echo &quot;server_list: $server_list&quot;
+
+set -x
+if $enable_parallel; then
+   python /usr/sbin/jenkins/scripts/remote-commands-servers.py --enable_parallel \
+          --server_list &quot;$server_list&quot; --command_file &quot;$command_file&quot; \
+          --ssh_username &quot;$ssh_username&quot; --ssh_key_file &quot;$ssh_key_file&quot; \
+          --key_passphrase &quot;$key_passphrase&quot;
+else
+   python /usr/sbin/jenkins/scripts/remote-commands-servers.py \
+          --server_list &quot;$server_list&quot; --command_file &quot;$command_file&quot; \
+          --ssh_username &quot;$ssh_username&quot; --ssh_key_file &quot;$ssh_key_file&quot; \
+          --key_passphrase &quot;$key_passphrase&quot;
+fi
+
+rm -rf &quot;$command_file&quot;
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
