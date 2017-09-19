@@ -17,7 +17,7 @@ Assumptions:
 - All ssh servers accept the same username
 - All ssh servers accept the same ssh private key
 
-# Online Usage
+# remote-commands-servers usage
 ```
 Denny: mac$ python ./remote-commands-servers.py --help
 usage: remote-commands-servers.py [-h] --server_list SERVER_LIST [--command_list COMMAND_LIST] [--command_file COMMAND_FILE]
