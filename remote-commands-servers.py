@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-13 17:54:14>
+## Updated: Time-stamp: <2017-09-26 17:37:06>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -20,6 +20,7 @@ def remote_commands_sequential(server_list, avoid_abort, command_list, ssh_param
     for server in server_list:
         [ip, port] = server
         (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
+        detail = detail.encode('utf-8')
         # TODO: Show output in a better way
         if exit_code != 0:
             print("In %s, Exit code: %d, Output:\n%s" % (ip, exit_code, detail))
@@ -50,6 +51,7 @@ def remote_commands_parallel(server_list, command_list, ssh_parameter_list):
 
     for x in range(0, len(server_list)):
         (exit_code, detail) = q.get()
+        detail = detail.encode('utf-8')
         if exit_code != 0:
             print("In %s, Exit code: %d, Output:\n%s" % (ip, exit_code, detail))
             sys.stdout.flush()
