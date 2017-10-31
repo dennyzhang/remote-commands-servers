@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-09-26 17:37:06>
+## Updated: Time-stamp: <2017-10-31 12:38:17>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -19,7 +19,7 @@ def remote_commands_sequential(server_list, avoid_abort, command_list, ssh_param
     failed_server_list = []
     for server in server_list:
         [ip, port] = server
-        (exit_code, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
+        (exit_code, ip, detail) = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
         detail = detail.encode('utf-8')
         # TODO: Show output in a better way
         if exit_code != 0:
@@ -50,7 +50,7 @@ def remote_commands_parallel(server_list, command_list, ssh_parameter_list):
         t.start()
 
     for x in range(0, len(server_list)):
-        (exit_code, detail) = q.get()
+        (exit_code, ip, detail) = q.get()
         detail = detail.encode('utf-8')
         if exit_code != 0:
             print("In %s, Exit code: %d, Output:\n%s" % (ip, exit_code, detail))
@@ -100,9 +100,9 @@ def run_remote_ssh(ip, port, command_list, ssh_parameter_list):
         stderr_str = "\n".join(stderr.readlines())
         ssh.close()
         if stderr_str == "":
-            return (exit_code, "%s\n%s" % (output, stdout_str))
+            return (exit_code, ip, "%s\n%s" % (output, stdout_str))
         else:
-            return (exit_code, "%s\nstdout: %s\nstderr: %s." % (output, stdout_str, stderr_str))
+            return (exit_code, ip, "%s\nstdout: %s\nstderr: %s." % (output, stdout_str, stderr_str))
     except:
         return (1, "%s\nUnexpected on server: %s error: %s" % (output, ip, sys.exc_info()[0]))
 
