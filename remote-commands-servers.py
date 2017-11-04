@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2017-09-05>
-## Updated: Time-stamp: <2017-10-31 12:38:17>
+## Updated: Time-stamp: <2017-11-04 10:12:00>
 ##-------------------------------------------------------------------
 import sys
 import paramiko
@@ -67,7 +67,7 @@ def run_remote_ssh_queue(q, ip, port, command_list, ssh_parameter_list):
         ret = run_remote_ssh(ip, port, command_list, ssh_parameter_list)
         q.put(ret)
     except Exception as e:
-        q.put((1, e))
+        q.put((1, ip, e))
     
 ################################################################################
 def get_ssh_server_list(server_list):
